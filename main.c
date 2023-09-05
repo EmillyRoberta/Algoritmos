@@ -109,6 +109,7 @@ int main()
     case 1:
         insertionSort(numbersVector, &option);
         resultOrdenation(numbersVector, &option);
+        resultTime(&option);
         dataOutput(&option);
         break;
     default:

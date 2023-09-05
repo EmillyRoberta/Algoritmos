@@ -51,8 +51,14 @@ char* createPath(TypeOfProperty *option, char *pathDefault)
 void createFileNumbers(TypeOfProperty *option)
 {
     FILE *file;
-    char pathDefault[50]="C:\\arquivodeentrada\\entrada";
+    char pathDefault[60];
+    char path[30] = "C:\\arquivodeentrada\\";
+    strcpy(pathDefault, path);
+    strcat(pathDefault, option->inputType);
+    strcat(pathDefault, "\\entrada");
+
     char *filePath = createPath(option, pathDefault);
+     printf("%s", filePath);
     file = fopen(filePath, "w");
 
     if (file == NULL)
@@ -91,7 +97,11 @@ void createFileNumbers(TypeOfProperty *option)
 int* readFileNumbers(TypeOfProperty *option)
 {
     FILE *file;
-    char pathDefault[50]="C:\\arquivodeentrada\\entrada";
+    char pathDefault[60];
+    char path[30] = "C:\\arquivodeentrada\\";
+    strcpy(pathDefault, path);
+    strcat(pathDefault, option->inputType);
+    strcat(pathDefault, "\\entrada");
     char *filePath = createPath(option, pathDefault);
     file = fopen(filePath, "r");
     char line[100];
@@ -132,7 +142,11 @@ int* readFileNumbers(TypeOfProperty *option)
 
 void resultOrdenation(int* vector, TypeOfProperty *option)
 {
-    char pathDefault[50]="C:\\arquivodesaida\\saida";
+    char pathDefault[60];
+    char path[30] = "C:\\arquivodesaida\\";
+    strcpy(pathDefault, path);
+    strcat(pathDefault, option->inputType);
+    strcat(pathDefault, "\\saida");
     char *filePath = createPath(option, pathDefault);
     FILE* file = fopen(filePath, "w");
     if (file == NULL)
@@ -149,5 +163,23 @@ void resultOrdenation(int* vector, TypeOfProperty *option)
     }
     fclose(file);
     free(vector);
+}
+
+void resultTime(TypeOfProperty *option)
+{
+    char pathDefault[60];
+    char path[30] = "C:\\arquivodetempo\\";
+    strcpy(pathDefault, path);
+    strcat(pathDefault, option->inputType);
+    strcat(pathDefault, "\\tempo");
+    char *filePath = createPath(option, pathDefault);
+    FILE* file = fopen(filePath, "w");
+    if (file == NULL)
+    {
+        perror("Erro ao criar o arquivo");
+        return 1;
+    }
+    fprintf(file, "%f\n", option->timeTaken);
+    fclose(file);
 }
 #endif
