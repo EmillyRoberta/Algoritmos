@@ -26,7 +26,7 @@ void menuFileSize(TypeOfProperty *option)
     scanf("%d", &option->inputSize);
 
     if(option->inputSize<1 || option->inputSize>7){
-      printf("Digite uma opção válida!\n");
+      printf("Digite uma opÃ§Ã£o vÃ¡lida!\n");
     }
     system("cls");
 }
@@ -34,11 +34,11 @@ void menuFileSize(TypeOfProperty *option)
 void menuNumbersChoice(TypeOfProperty *option)
 {
     printf("                                                 \n");
-    printf("\t***Escolha a forma em que serão geradas:*******\n");
+    printf("\t***Escolha a forma em que serÃ£o geradas:*******\n");
     printf("\t|                                              |\n");
-    printf("\t|           r. Números Randômicos              |\n");
-    printf("\t|           c. Números Crescentes              |\n");
-    printf("\t|           d. Números Descrescentes           |\n");
+    printf("\t|           r. NÃºmeros RandÃ´micos              |\n");
+    printf("\t|           c. NÃºmeros Crescentes              |\n");
+    printf("\t|           d. NÃºmeros Decrescentes            |\n");
     printf("\t|                                              |\n");
     printf("\t|______________________________________________|\n\n");
 
@@ -53,14 +53,14 @@ void menuNumbersChoice(TypeOfProperty *option)
     }
     else
     {
-        printf("Digite uma opção válida!\n");
+        printf("Digite uma opÃ§Ã£o vÃ¡lida!\n");
     }
 }
 
 void menuAlgorithmChoice(TypeOfProperty *option)
 {
     printf("                                                 \n");
-    printf("\t***Escolha o Algoritmo de Ordenação Desejado***\n");
+    printf("\t***Escolha o Algoritmo de OrdenaÃ§Ã£o Desejado***\n");
     printf("\t|                                              |\n");
     printf("\t|           1. InsertionSort                   |\n");
     printf("\t|           2. Sair                            |\n");
@@ -78,7 +78,7 @@ void menuAlgorithmChoice(TypeOfProperty *option)
     }
     else
     {
-        printf("Digite uma opção válida!\n");
+        printf("Digite uma opÃ§Ã£o vÃ¡lida!\n");
     }
 
 }
