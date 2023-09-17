@@ -35,7 +35,7 @@ char* createPath(TypeOfProperty *option, char *pathDefault)
     char *filePath =  (char *)malloc(60 * sizeof(char));
     if (filePath == NULL)
     {
-        perror("Erro de alocação de memória");
+        perror("Erro de alocaÃ§Ã£o de memÃ³ria");
         exit(1);
     }
 
@@ -52,7 +52,7 @@ void createFileNumbers(TypeOfProperty *option)
 {
     FILE *file;
     char pathDefault[60];
-    char path[30] = "C:\\arquivodeentrada\\";
+    char path[30] = ".\\arquivodeentrada\\";
     strcpy(pathDefault, path);
     strcat(pathDefault, option->inputType);
     strcat(pathDefault, "\\entrada");
@@ -98,7 +98,7 @@ int* readFileNumbers(TypeOfProperty *option)
 {
     FILE *file;
     char pathDefault[60];
-    char path[30] = "C:\\arquivodeentrada\\";
+    char path[30] = ".\\arquivodeentrada\\";
     strcpy(pathDefault, path);
     strcat(pathDefault, option->inputType);
     strcat(pathDefault, "\\entrada");
@@ -121,7 +121,7 @@ int* readFileNumbers(TypeOfProperty *option)
     int* vetor = (int*)malloc((sizeFile) * sizeof(int));
     if (vetor == NULL)
     {
-        perror("Erro de alocação de memória");
+        perror("Erro de alocaÃ§Ã£o de memÃ³ria");
         fclose(file);
         return NULL;
     }
@@ -130,7 +130,7 @@ int* readFileNumbers(TypeOfProperty *option)
     {
         if (fscanf(file, "%d", &vetor[i]) != 1)
         {
-            printf("Erro ao ler números do arquivo.\n");
+            printf("Erro ao ler nÃºmeros do arquivo.\n");
             fclose(file);
             free(vetor);
             return NULL;
@@ -143,7 +143,7 @@ int* readFileNumbers(TypeOfProperty *option)
 void resultOrdenation(int* vector, TypeOfProperty *option)
 {
     char pathDefault[60];
-    char path[30] = "C:\\arquivodesaida\\";
+    char path[30] = ".\\arquivodesaida\\";
     strcpy(pathDefault, path);
     strcat(pathDefault, option->inputType);
     strcat(pathDefault, "\\saida");
@@ -154,9 +154,7 @@ void resultOrdenation(int* vector, TypeOfProperty *option)
         perror("Erro ao criar o arquivo");
         return 1;
     }
-    fprintf(file, "Tamanho do vetor: %d\n", option->inputSize);
-    fprintf(file, "Tempo gasto para ordenar o vetor: %f milisegundos\n", option->timeTaken);
-    fprintf(file, "Vetor ordenado:\n");
+    fprintf(file, "%d\n", option->inputSize);
     for (int i = 0; i < option->inputSize; i++)
     {
         fprintf(file, "%d\n", vector[i]);
@@ -168,7 +166,7 @@ void resultOrdenation(int* vector, TypeOfProperty *option)
 void resultTime(TypeOfProperty *option)
 {
     char pathDefault[60];
-    char path[30] = "C:\\arquivodetempo\\";
+    char path[30] = ".\\arquivodetempo\\";
     strcpy(pathDefault, path);
     strcat(pathDefault, option->inputType);
     strcat(pathDefault, "\\tempo");
