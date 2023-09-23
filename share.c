@@ -1,64 +1,74 @@
 #ifndef MEUHEADER_H
 #define MEUHEADER_H
+#define PATH_SEPARATOR "\\"
 typedef struct
 {
-    int algorithm;
+    char algorithm[40];
     char inputType[30];
     int inputSize;
     double timeTaken;
 } TypeOfProperty;
 
-void filterNumber(TypeOfProperty *option)
+typedef struct
 {
+    int algorithm;
+    int inputType;
+    int inputSize;
+} TypeOfPropertyMenu;
+
+
+void filterNumber(TypeOfProperty *option, TypeOfPropertyMenu *optionMenu)
+{
+    char *algorithmName[] = {"InsertionSort", "BubbleSort", "SelectionSort", "ShellSort"};
+    strcpy(option->algorithm, algorithmName[optionMenu->algorithm - 1]);
+
+    char *type[] = {"Random", "Crescente", "Decrescente"};
+    strcpy(option->inputType, type[optionMenu->inputType - 1]);
+
     int sizes[] = {10,100,1000,10000,100000,1000000};
-    option->inputSize = sizes[option->inputSize - 1];
+    option->inputSize = sizes[optionMenu->inputSize - 1];
 }
 
-void filterNumbersChoice(TypeOfProperty *option)
+void createFiles(TypeOfProperty *option)
 {
-    if(option->inputType[0]=='r')
-    {
-        strcpy(option->inputType, "random");
-    }
-    if(option->inputType[0]=='c')
-    {
-        strcpy(option->inputType, "crescente");
-    }
-    if(option->inputType[0]=='d')
-    {
-        strcpy(option->inputType, "decrescente");
-    }
+    char input[30] = "Arquivos de Entrada";
+    char output[30] = "Arquivos de Saida";
+    char time[30] = "Arquivos de Tempo";
+    char result[200];
+
+    mkdir(option->algorithm);
+
+    snprintf(result, sizeof(result), "%s%s%s", option->algorithm, PATH_SEPARATOR, input);
+    mkdir(result);
+
+    snprintf(result, sizeof(result), "%s%s%s", option->algorithm, PATH_SEPARATOR, output);
+    mkdir(result);
+
+    snprintf(result, sizeof(result), "%s%s%s", option->algorithm, PATH_SEPARATOR, time);
+    mkdir(result);
 }
 
-char* createPath(TypeOfProperty *option, char *pathDefault)
-{
-    char *filePath =  (char *)malloc(60 * sizeof(char));
-    if (filePath == NULL)
-    {
-        perror("Erro de alocação de memória");
-        exit(1);
-    }
 
-    char inputSize[10];
-    sprintf(inputSize, "%d", option->inputSize); //converto int pra string
-    strcpy(filePath, pathDefault);
-    strcat(filePath, option->inputType);
-    strcat(filePath, inputSize);
-    strcat(filePath, ".txt");
+char* createPath(TypeOfProperty *option, char *outro)
+{
+    char result[200];
+
+    snprintf(result, sizeof(result), "%s\\Arquivos de %s\\%s",
+             option->algorithm, outro, option->inputType);
+    mkdir(result);
+
+    snprintf(result, sizeof(result), "%s\\Arquivos de %s\\%s\\%s%s%d.txt",
+             option->algorithm, outro, option->inputType, outro, option->inputType, option->inputSize);
+
+    char *filePath = (char *)malloc(strlen(result) + 1); // +1 para o caractere nulo
+    strcpy(filePath, result);
     return filePath;
 }
 
 void createFileNumbers(TypeOfProperty *option)
 {
     FILE *file;
-    char pathDefault[60];
-    char path[30] = ".\\arquivodeentrada\\";
-    strcpy(pathDefault, path);
-    strcat(pathDefault, option->inputType);
-    strcat(pathDefault, "\\entrada");
-
-    char *filePath = createPath(option, pathDefault);
-     printf("%s", filePath);
+    char *filePath = createPath(option, "Entrada");
     file = fopen(filePath, "w");
 
     if (file == NULL)
@@ -66,8 +76,8 @@ void createFileNumbers(TypeOfProperty *option)
         perror("Erro ao abrir o arquivo");
         exit(1);
     }
-     fprintf(file, "%d\n", option->inputSize);
-    if(strcmp(option->inputType, "random") == 0)
+    fprintf(file, "%d\n", option->inputSize);
+    if(strcmp(option->inputType, "Random") == 0)
     {
         srand(time(NULL));
         for (int i = 0; i < option->inputSize; i++)
@@ -76,14 +86,14 @@ void createFileNumbers(TypeOfProperty *option)
             fprintf(file, "%d\n", randleNumbers);
         }
     }
-    if(strcmp(option->inputType, "crescente") == 0)
+    if(strcmp(option->inputType, "Crescente") == 0)
     {
         for (int i = 1; i <= option->inputSize; i++)
         {
             fprintf(file, "%d\n", i);
         }
     }
-    if(strcmp(option->inputType, "decrescente") == 0)
+    if(strcmp(option->inputType, "Decrescente") == 0)
     {
         for (int i = option->inputSize; i >= 1; i--)
         {
@@ -96,14 +106,8 @@ void createFileNumbers(TypeOfProperty *option)
 
 int* readFileNumbers(TypeOfProperty *option)
 {
-    FILE *file;
-    char pathDefault[60];
-    char path[30] = ".\\arquivodeentrada\\";
-    strcpy(pathDefault, path);
-    strcat(pathDefault, option->inputType);
-    strcat(pathDefault, "\\entrada");
-    char *filePath = createPath(option, pathDefault);
-    file = fopen(filePath, "r");
+    char *filePath = createPath(option, "Entrada");
+    FILE* file = fopen(filePath, "r");
     char line[100];
     int sizeFile;
 
@@ -142,12 +146,7 @@ int* readFileNumbers(TypeOfProperty *option)
 
 void resultOrdenation(int* vector, TypeOfProperty *option)
 {
-    char pathDefault[60];
-    char path[30] = ".\\arquivodesaida\\";
-    strcpy(pathDefault, path);
-    strcat(pathDefault, option->inputType);
-    strcat(pathDefault, "\\saida");
-    char *filePath = createPath(option, pathDefault);
+    char *filePath = createPath(option, "Saida");
     FILE* file = fopen(filePath, "w");
     if (file == NULL)
     {
@@ -165,12 +164,7 @@ void resultOrdenation(int* vector, TypeOfProperty *option)
 
 void resultTime(TypeOfProperty *option)
 {
-    char pathDefault[60];
-    char path[30] = ".\\arquivodetempo\\";
-    strcpy(pathDefault, path);
-    strcat(pathDefault, option->inputType);
-    strcat(pathDefault, "\\tempo");
-    char *filePath = createPath(option, pathDefault);
+    char *filePath = createPath(option, "Tempo");
     FILE* file = fopen(filePath, "w");
     if (file == NULL)
     {
