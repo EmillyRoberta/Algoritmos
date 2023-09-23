@@ -4,82 +4,107 @@
 #include <time.h>
 #include <windows.h>
 #include <locale.h>
-#include "Insertion_sort.c"
+#include "algorithms.c"
 #include <time.h>
+#include <sys/types.h>
+#ifdef _WIN32
+#include <direct.h>
+#define mkdir(directory, mode) _mkdir(directory)
+#endif
 #include "share.c"
+#define PATH_SEPARATOR "\\"
 
-void menuFileSize(TypeOfProperty *option)
+
+void menuFileSize(TypeOfPropertyMenu *optionMenu)
 {
-    printf("                                                 \n");
-    printf("\t****Escolha a quantidade de algoritmos:********\n");
-    printf("\t|                                              |\n");
-    printf("\t|           1. 10                              |\n");
-    printf("\t|           2. 100                             |\n");
-    printf("\t|           3. 1000                            |\n");
-    printf("\t|           4. 10000                           |\n");
-    printf("\t|           5. 100000                          |\n");
-    printf("\t|           6. 1000000                         |\n");
-    printf("\t|                                              |\n");
-    printf("\t|______________________________________________|\n\n");
+    do
+    {
+        printf("                                                 \n");
+        printf("\t****Escolha a quantidade de algoritmos:********\n");
+        printf("\t|                                              |\n");
+        printf("\t|           1. 10                              |\n");
+        printf("\t|           2. 100                             |\n");
+        printf("\t|           3. 1000                            |\n");
+        printf("\t|           4. 10000                           |\n");
+        printf("\t|           5. 100000                          |\n");
+        printf("\t|           6. 1000000                         |\n");
+        printf("\t|                                              |\n");
+        printf("\t|______________________________________________|\n\n");
 
-    printf("\tDigite a opcao: ");
-    scanf("%d", &option->inputSize);
+        printf("\tDigite a opcao: ");
+        scanf("%d", &optionMenu->inputSize);
 
-    if(option->inputSize<1 || option->inputSize>7){
-      printf("Digite uma opção válida!\n");
+        if(optionMenu->inputSize<1 || optionMenu->inputSize>6)
+        {
+            printf("Digite uma opção válida!\n");
+            Sleep(1000);
+        }
+        system("cls");
     }
-    system("cls");
+    while(optionMenu->inputSize<1 || optionMenu->inputSize>6);
 }
 
-void menuNumbersChoice(TypeOfProperty *option)
+void menuNumbersChoice(TypeOfPropertyMenu *optionMenu)
 {
-    printf("                                                 \n");
-    printf("\t***Escolha a forma em que serão geradas:*******\n");
-    printf("\t|                                              |\n");
-    printf("\t|           r. Números Randômicos              |\n");
-    printf("\t|           c. Números Crescentes              |\n");
-    printf("\t|           d. Números Decrescentes            |\n");
-    printf("\t|                                              |\n");
-    printf("\t|______________________________________________|\n\n");
-
-    printf("\tDigite a opcao: ");
-    scanf(" %c", &option->inputType);
-
-    if(option->inputType[0]=='r' || option->inputType[0]=='c' ||
-            option->inputType[0]=='d' || option->inputType[0]=='s')
+    do
     {
-        system("cls");
-        menuFileSize(option);
+        printf("                                                 \n");
+        printf("\t***Escolha a forma em que serão geradas:*******\n");
+        printf("\t|                                              |\n");
+        printf("\t|           1. Números Randômicos              |\n");
+        printf("\t|           2. Números Crescentes              |\n");
+        printf("\t|           3. Números Decrescentes            |\n");
+        printf("\t|                                              |\n");
+        printf("\t|______________________________________________|\n\n");
+
+        printf("\tDigite a opcao: ");
+        scanf(" %d", &optionMenu->inputType);
+
+        if(optionMenu->inputType>0 && optionMenu->inputType<4)
+        {
+            system("cls");
+            menuFileSize(optionMenu);
+        }
+        else
+        {
+            printf("Digite uma opção válida!\n");
+            Sleep(1000);
+            system("cls");
+        }
     }
-    else
-    {
-        printf("Digite uma opção válida!\n");
-    }
+    while(optionMenu->inputType<1 || optionMenu->inputType>3);
 }
 
-void menuAlgorithmChoice(TypeOfProperty *option)
+void menuAlgorithmChoice(TypeOfPropertyMenu *optionMenu)
 {
-    printf("                                                 \n");
-    printf("\t***Escolha o Algoritmo de Ordenação Desejado***\n");
-    printf("\t|                                              |\n");
-    printf("\t|           1. InsertionSort                   |\n");
-    printf("\t|           2. Sair                            |\n");
-    printf("\t|                                              |\n");
-    printf("\t|                                              |\n");
-    printf("\t|______________________________________________|\n\n");
-
-    printf("\tDigite a opcao: ");
-    scanf("%d", &option->algorithm);
-
-    if(option->algorithm == 1)
+    do
     {
-        system("cls");
-        menuNumbersChoice(option);
+        printf("                                                 \n");
+        printf("\t***Escolha o Algoritmo de Ordenação Desejado***\n");
+        printf("\t|                                              |\n");
+        printf("\t|           1. InsertionSort                   |\n");
+        printf("\t|           2. BubbleSort                      |\n");
+        printf("\t|           3. SelectionSort                   |\n");
+        printf("\t|           4. ShellSort                       |\n");
+        printf("\t|                                              |\n");
+        printf("\t|______________________________________________|\n\n");
+
+        printf("\tDigite a opcao: ");
+        scanf("%d", &optionMenu->algorithm);
+
+        if(optionMenu->algorithm>0 && optionMenu->algorithm<5)
+        {
+            system("cls");
+            menuNumbersChoice(optionMenu);
+        }
+        else
+        {
+            printf("Digite uma opção válida!\n");
+            Sleep(1000);
+            system("cls");
+        }
     }
-    else
-    {
-        printf("Digite uma opção válida!\n");
-    }
+    while(optionMenu->algorithm<1 || optionMenu->algorithm>4);
 
 }
 
@@ -88,6 +113,7 @@ void dataOutput(TypeOfProperty *option)
     printf("                                                 \n");
     printf("\t***************Dados Apurados******************\n");
     printf("\t                                              \n");
+    printf("\t Algoritmo Usado: %s                          \n", option->algorithm);
     printf("\t Tipo de Entrada: %s                          \n", option->inputType);
     printf("\t Tamanho: %d                                  \n", option->inputSize);
     printf("\t Tempo: %f segundos                           \n", option->timeTaken);
@@ -97,17 +123,36 @@ void dataOutput(TypeOfProperty *option)
 int main()
 {
     setlocale(LC_ALL, "Portuguese");
+    TypeOfPropertyMenu optionMenu;
     TypeOfProperty option;
-    menuAlgorithmChoice(&option);
-    filterNumber(&option);
-    filterNumbersChoice(&option);
+    menuAlgorithmChoice(&optionMenu);
+    filterNumber(&option, &optionMenu);
+    createFiles(&option);
     createFileNumbers(&option);
     int* numbersVector = readFileNumbers(&option);
 
-    switch(option.algorithm)
+    switch(optionMenu.algorithm)
     {
     case 1:
         insertionSort(numbersVector, &option);
+        resultOrdenation(numbersVector, &option);
+        resultTime(&option);
+        dataOutput(&option);
+        break;
+    case 2:
+        bubbleSort(numbersVector, &option);
+        resultOrdenation(numbersVector, &option);
+        resultTime(&option);
+        dataOutput(&option);
+        break;
+    case 3:
+        selectionSort(numbersVector, &option);
+        resultOrdenation(numbersVector, &option);
+        resultTime(&option);
+        dataOutput(&option);
+        break;
+    case 4:
+        shellSort(numbersVector, &option);
         resultOrdenation(numbersVector, &option);
         resultTime(&option);
         dataOutput(&option);
