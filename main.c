@@ -14,7 +14,6 @@
 #include "share.c"
 #define PATH_SEPARATOR "\\"
 
-
 void menuFileSize(TypeOfPropertyMenu *optionMenu)
 {
     do
@@ -75,6 +74,44 @@ void menuNumbersChoice(TypeOfPropertyMenu *optionMenu)
     while(optionMenu->inputType<1 || optionMenu->inputType>3);
 }
 
+void menuQuick(TypeOfPropertyMenu *optionMenu)
+{
+    int opcao;
+    printf("                                                 \n");
+    printf("\t******Escolha o posicionamento do Pivô*********\n");
+    printf("\t|                                              |\n");
+    printf("\t|           1. Primeiro Elemento               |\n");
+    printf("\t|           2. Média do Array                  |\n");
+    printf("\t|           3. Médiana do Array                |\n");
+    printf("\t|           4. Elemento randômico              |\n");
+    printf("\t|                                              |\n");
+    printf("\t|______________________________________________|\n\n");
+
+    printf("\tDigite a opcao: ");
+    scanf("%d", &opcao);
+
+    switch(opcao)
+    {
+    case 1:
+        optionMenu->algorithm=6;
+        break;
+    case 2:
+        optionMenu->algorithm=7;
+        break;
+    case 3:
+        optionMenu->algorithm=8;
+        break;
+    case 4:
+        optionMenu->algorithm=9;
+        break;
+    default:
+        printf("Digite uma opcao valida\n");
+        system("cls");
+        break;
+    }
+    system("cls");
+}
+
 void menuAlgorithmChoice(TypeOfPropertyMenu *optionMenu)
 {
     do
@@ -86,15 +123,22 @@ void menuAlgorithmChoice(TypeOfPropertyMenu *optionMenu)
         printf("\t|           2. BubbleSort                      |\n");
         printf("\t|           3. SelectionSort                   |\n");
         printf("\t|           4. ShellSort                       |\n");
+        printf("\t|           5. MergeSort                       |\n");
+        printf("\t|           6. QuickSort                       |\n");
         printf("\t|                                              |\n");
         printf("\t|______________________________________________|\n\n");
 
         printf("\tDigite a opcao: ");
         scanf("%d", &optionMenu->algorithm);
-
-        if(optionMenu->algorithm>0 && optionMenu->algorithm<5)
+        if(optionMenu->algorithm>0 && optionMenu->algorithm<6)
         {
             system("cls");
+            menuNumbersChoice(optionMenu);
+        }
+        if(optionMenu->algorithm == 6)
+        {
+            system("cls");
+            menuQuick(optionMenu);
             menuNumbersChoice(optionMenu);
         }
         else
@@ -104,7 +148,7 @@ void menuAlgorithmChoice(TypeOfPropertyMenu *optionMenu)
             system("cls");
         }
     }
-    while(optionMenu->algorithm<1 || optionMenu->algorithm>4);
+    while(optionMenu->algorithm<1 || optionMenu->algorithm>9);
 
 }
 
@@ -130,6 +174,7 @@ int main()
     createFiles(&option);
     createFileNumbers(&option);
     int* numbersVector = readFileNumbers(&option);
+    clock_t start_t, end_t;
 
     switch(optionMenu.algorithm)
     {
@@ -153,6 +198,48 @@ int main()
         break;
     case 4:
         shellSort(numbersVector, &option);
+        resultOrdenation(numbersVector, &option);
+        resultTime(&option);
+        dataOutput(&option);
+        break;
+    case 5:
+        option.timeTaken = mergeSort(numbersVector, option.inputSize);
+        resultOrdenation(numbersVector, &option);
+        resultTime(&option);
+        dataOutput(&option);
+        break;
+    case 6:
+        start_t = clock();
+        quickSort_V1(numbersVector, 0, option.inputSize);
+        end_t = clock();
+        option.timeTaken = ((end_t - start_t) / (double)CLOCKS_PER_SEC);
+        resultOrdenation(numbersVector, &option);
+        resultTime(&option);
+        dataOutput(&option);
+        break;
+    case 7:
+        start_t = clock();
+        quickSort_V2(numbersVector, 0, option.inputSize);
+        end_t = clock();
+        option.timeTaken = ((end_t - start_t) / (double)CLOCKS_PER_SEC);
+        resultOrdenation(numbersVector, &option);
+        resultTime(&option);
+        dataOutput(&option);
+        break;
+    case 8:
+        start_t = clock();
+        quickSort_V3(numbersVector, 0, option.inputSize);
+        end_t = clock();
+        option.timeTaken = ((end_t - start_t) / (double)CLOCKS_PER_SEC);
+        resultOrdenation(numbersVector, &option);
+        resultTime(&option);
+        dataOutput(&option);
+        break;
+    case 9:
+        start_t = clock();
+        quickSort_V4(numbersVector, 0, option.inputSize);
+        end_t = clock();
+        option.timeTaken = ((end_t - start_t) / (double)CLOCKS_PER_SEC);
         resultOrdenation(numbersVector, &option);
         resultTime(&option);
         dataOutput(&option);
