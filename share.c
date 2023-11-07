@@ -19,7 +19,9 @@ typedef struct
 
 void filterNumber(TypeOfProperty *option, TypeOfPropertyMenu *optionMenu)
 {
-    char *algorithmName[] = {"InsertionSort", "BubbleSort", "SelectionSort", "ShellSort"};
+    char *algorithmName[] = {"InsertionSort", "BubbleSort", "SelectionSort",
+     "ShellSort", "MergeSort", "QuickSort_V1(inicio)", "QuickSort_V2(média)",
+     "QuickSort_V3(mediana)", "QuickSort_V4 (random)"};
     strcpy(option->algorithm, algorithmName[optionMenu->algorithm - 1]);
 
     char *type[] = {"Random", "Crescente", "Decrescente"};
