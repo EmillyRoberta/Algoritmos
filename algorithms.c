@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "share.c"
+#include "structs.h"
 
 void insertionSort(int* values, TypeOfProperty *option)
 {
@@ -139,9 +139,8 @@ void merge(int* v, int n)
     free(aux);
 }
 
-double mergeSort(int* v, int n)
+void mergeSort(int* v, int n)
 {
-    clock_t start = clock();
     int metade = 0;
     if (n > 1)
     {
@@ -150,12 +149,10 @@ double mergeSort(int* v, int n)
         mergeSort(v + metade, n - metade);
         merge(v, n);
     }
-    clock_t end = clock();
-    return (double)(end - start) / CLOCKS_PER_SEC;
 }
 
 //Quick_Sort versão 1
-void troca(int* v, int i, int j)
+/*void troca(int* v, int i, int j)
 {
 	int aux;
 	aux = v[i];
@@ -196,17 +193,36 @@ int particionarInicio(int *v, int tami, int tamf)
 	p = particionar(v, tami, tamf);
 
 	return p;
+}*/
+
+int partitionExtreme(int *vet, int p, int r){
+    int x = vet[p];
+    int i = p-1;
+    int j = r+1;
+    while(1){
+        do{
+            i++;
+        }while(vet[i] < x);
+        do{
+            j--;
+        }while(vet[j] > x);
+
+        if(i<j){
+            int aux = vet[i];
+            vet[i] = vet[j];
+            vet[j] = aux;
+        }else{
+            return j;
+        }
+    }
 }
 
-void quickSort_V1(int *v, int tami, int tamf)
-{
-	if (tami < tamf)
-	{
-		int pivo = particionarInicio(v, tami, tamf);
-
-		quickSort_V1(v, tami, pivo - 1);
-		quickSort_V1(v, pivo + 1, tamf);
-	}
+void quickSort_V1(int *vet, int p, int r){
+    if(p < r){
+        int q = partitionExtreme(vet,p,r);
+        quickSort_V1(vet,p,q);
+        quickSort_V1(vet,q+1,r);
+    }
 }
 
 //Quick_Sort Média
