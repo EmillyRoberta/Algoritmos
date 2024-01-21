@@ -4,14 +4,15 @@
 #include <time.h>
 #include <windows.h>
 #include <locale.h>
-#include "algorithms.c"
+#include "share.h"
+#include "algorithms.h"
+#include "structs.h"
 #include <time.h>
 #include <sys/types.h>
 #ifdef _WIN32
 #include <direct.h>
 #define mkdir(directory, mode) _mkdir(directory)
 #endif
-#include "share.c"
 #define PATH_SEPARATOR "\\"
 
 void menuFileSize(TypeOfPropertyMenu *optionMenu)
@@ -66,6 +67,7 @@ void menuNumbersChoice(TypeOfPropertyMenu *optionMenu)
         }
         else
         {
+            printf("entrou aqui3\n");
             printf("Digite uma opção válida!\n");
             Sleep(1000);
             system("cls");
@@ -114,6 +116,7 @@ void menuQuick(TypeOfPropertyMenu *optionMenu)
 
 void menuAlgorithmChoice(TypeOfPropertyMenu *optionMenu)
 {
+    int opcao;
     do
     {
         printf("                                                 \n");
@@ -129,26 +132,25 @@ void menuAlgorithmChoice(TypeOfPropertyMenu *optionMenu)
         printf("\t|______________________________________________|\n\n");
 
         printf("\tDigite a opcao: ");
-        scanf("%d", &optionMenu->algorithm);
-        if(optionMenu->algorithm>0 && optionMenu->algorithm<6)
-        {
-            system("cls");
-            menuNumbersChoice(optionMenu);
-        }
-        if(optionMenu->algorithm == 6)
+        scanf("%d", &opcao);
+
+        if(opcao == 6)
         {
             system("cls");
             menuQuick(optionMenu);
             menuNumbersChoice(optionMenu);
+            return;
         }
-        else
+        if(opcao>0 && opcao<7)
         {
-            printf("Digite uma opção válida!\n");
-            Sleep(1000);
+            optionMenu->algorithm = opcao;
             system("cls");
+            menuNumbersChoice(optionMenu);
+            return;
         }
+        system("cls");
     }
-    while(optionMenu->algorithm<1 || optionMenu->algorithm>9);
+    while(opcao<1 || opcao>6);
 
 }
 
@@ -203,7 +205,10 @@ int main()
         dataOutput(&option);
         break;
     case 5:
-        option.timeTaken = mergeSort(numbersVector, option.inputSize);
+        start_t = clock();
+        mergeSort(numbersVector, option.inputSize);
+        end_t = clock();
+        option.timeTaken = ((end_t - start_t) / (double)CLOCKS_PER_SEC);
         resultOrdenation(numbersVector, &option);
         resultTime(&option);
         dataOutput(&option);
