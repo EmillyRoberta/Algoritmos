@@ -1,21 +1,9 @@
-#ifndef MEUHEADER_H
-#define MEUHEADER_H
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include "structs.h"
 #define PATH_SEPARATOR "\\"
-typedef struct
-{
-    char algorithm[40];
-    char inputType[30];
-    int inputSize;
-    double timeTaken;
-} TypeOfProperty;
-
-typedef struct
-{
-    int algorithm;
-    int inputType;
-    int inputSize;
-} TypeOfPropertyMenu;
-
 
 void filterNumber(TypeOfProperty *option, TypeOfPropertyMenu *optionMenu)
 {
@@ -51,7 +39,7 @@ void createFiles(TypeOfProperty *option)
 }
 
 
-char* createPath(TypeOfProperty *option, char *outro)
+char *createPath(TypeOfProperty *option, char *outro)
 {
     char result[200];
 
@@ -171,9 +159,9 @@ void resultTime(TypeOfProperty *option)
     if (file == NULL)
     {
         perror("Erro ao criar o arquivo");
-        return 1;
+        return;
     }
     fprintf(file, "%f\n", option->timeTaken);
     fclose(file);
 }
-#endif
+
